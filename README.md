@@ -1,68 +1,68 @@
-# Prediction Market Trading Bot
+# Bot de Trading para Mercados de Predicción
 
-A multi-strategy trading bot that identifies pricing inefficiencies in prediction markets. Combines **BTC 5-minute microstructure analysis** with **ensemble weather forecasting** to trade on **Kalshi** and **Polymarket**. Features a professional React dashboard.
+Un bot de trading multi-estrategia que identifica ineficiencias de precios en mercados de predicción. Combina **análisis de microestructura de BTC en 5 minutos** con **pronósticos meteorológicos de conjunto** para operar en **Kalshi** y **Polymarket**. Cuenta con un panel profesional en React.
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue) ![React](https://img.shields.io/badge/react-18+-61DAFB) ![TypeScript](https://img.shields.io/badge/typescript-5.0+-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ![Dashboard](docs/dashboard.png)
 
-**100% free to run** - No paid APIs, no subscriptions. All data sources are free. Kalshi API key optional for Kalshi markets.
+**100% gratis de ejecutar** - Sin APIs de pago, sin suscripciones. Todas las fuentes de datos son gratuitas. La clave API de Kalshi es opcional para los mercados de Kalshi.
 
-## Overview
+## Descripción General
 
-### Strategy 1: BTC 5-Minute Up/Down
-Scans Polymarket BTC 5-minute Up/Down markets every 60 seconds. Uses real-time 1-minute candle data from Coinbase/Kraken/Binance to compute RSI, momentum, VWAP deviation, SMA crossover, and market skew as a weighted composite signal. Trades when edge > 2%.
+### Estrategia 1: BTC 5 Minutos Arriba/Abajo
+Escanea los mercados Arriba/Abajo de 5 minutos de BTC de Polymarket cada 60 segundos. Utiliza datos de velas de 1 minuto en tiempo real de Coinbase/Kraken/Binance para calcular el RSI, momento, desviación VWAP, cruce de SMA y sesgo del mercado como una señal compuesta ponderada. Opera cuando la ventaja > 2%.
 
-### Strategy 2: Weather Temperature (Kalshi + Polymarket)
-Scans weather temperature markets on **Kalshi** (KXHIGH series) and **Polymarket** every 5 minutes. Uses 31-member GFS ensemble forecasts from Open-Meteo to estimate the probability of temperature thresholds being exceeded. Trades when edge > 8%. Kalshi markets are auto-discovered via the `KXHIGHNY`, `KXHIGHCHI`, `KXHIGHMIA`, `KXHIGHLAX`, `KXHIGHDEN` series tickers.
+### Estrategia 2: Temperatura del Clima (Kalshi + Polymarket)
+Escanea los mercados de temperatura del clima en **Kalshi** (serie KXHIGH) y **Polymarket** cada 5 minutos. Usa pronósticos de conjunto GFS de 31 miembros de Open-Meteo para estimar la probabilidad de que se superen los umbrales de temperatura. Opera cuando la ventaja > 8%. Los mercados de Kalshi se descubren automáticamente mediante los tickers de la serie `KXHIGHNY`, `KXHIGHCHI`, `KXHIGHMIA`, `KXHIGHLAX`, `KXHIGHDEN`.
 
-### Key Features
+### Características Clave
 
-- **BTC Microstructure Analysis** - RSI, momentum (1m/5m/15m), VWAP, SMA crossover from real candle data
-- **Ensemble Weather Forecasting** - 31-member GFS ensemble from Open-Meteo for probabilistic temperature predictions
-- **Multi-Platform Trading** - Trades weather markets on both Kalshi (KXHIGH series) and Polymarket simultaneously
-- **Edge Detection** - Identifies mispriced markets across both strategies and platforms
-- **Kelly Criterion Sizing** - Fractional Kelly (15%) position sizing with per-trade caps
-- **Signal Calibration** - Tracks predictions vs outcomes with Brier score
-- **Professional Dashboard** - React 3-column dashboard with real-time updates
-- **Simulation Mode** - Paper trading with virtual bankroll tracking and equity curves
+- **Análisis de Microestructura de BTC** - RSI, momento (1m/5m/15m), VWAP, cruce de SMA a partir de datos de velas reales
+- **Pronósticos de Clima de Conjunto** - Conjunto GFS de 31 miembros de Open-Meteo para predicciones probabilísticas de temperatura
+- **Trading Multi-Plataforma** - Opera en mercados climáticos tanto en Kalshi (serie KXHIGH) como en Polymarket simultáneamente
+- **Detección de Ventaja** - Identifica mercados con precios incorrectos en ambas estrategias y plataformas
+- **Tamaño de Posición según Criterio de Kelly** - Tamaño de posición fraccional de Kelly (15%) con límites por operación
+- **Calibración de Señales** - Rastrea las predicciones frente a los resultados con la puntuación de Brier
+- **Panel Profesional** - Panel en React de 3 columnas con actualizaciones en tiempo real
+- **Modo Simulación** - Trading en papel con seguimiento de capital virtual y curvas de rendimiento (capital)
 
-## Quick Start
+## Inicio Rápido
 
-### 1. Backend Setup
+### 1. Configuración del Backend
 
 ```bash
 cd kalshi-trading-bot
 
-# Create virtual environment
+# Crear entorno virtual
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
+# Instalar dependencias
 pip install -r requirements.txt
 
-# Run the backend
+# Ejecutar el backend
 uvicorn backend.api.main:app --reload --port 8000
 ```
 
-Backend will be at: http://localhost:8000
-API docs at: http://localhost:8000/docs
+El backend estará en: http://localhost:8000
+Documentación de la API en: http://localhost:8000/docs
 
-### 2. Frontend Setup
+### 2. Configuración del Frontend
 
 ```bash
 cd frontend
 
-# Install dependencies
+# Instalar dependencias
 npm install
 
-# Run the frontend
+# Ejecutar el frontend
 npm run dev
 ```
 
-Frontend will be at: http://localhost:5173
+El frontend estará en: http://localhost:5173
 
-## Architecture
+## Arquitectura
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -95,123 +95,123 @@ Frontend will be at: http://localhost:5173
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-## How It Works
+## Cómo Funciona
 
-### BTC 5-Minute Strategy
-1. Fetch 60 one-minute candles from Coinbase/Kraken/Binance (fallback chain)
-2. Compute 5 indicators: RSI(14), Momentum(1m/5m/15m), VWAP deviation, SMA crossover, Market skew
-3. Convergence filter: require 2+ of 4 indicators to agree
-4. Weighted composite -> model UP probability (0.35-0.65 range)
-5. Compare to Polymarket prices, trade the side with higher edge
+### Estrategia BTC 5 Minutos
+1. Obtener 60 velas de un minuto de Coinbase/Kraken/Binance (cadena de respaldo)
+2. Calcular 5 indicadores: RSI(14), Momento(1m/5m/15m), desviación VWAP, cruce SMA, sesgo de mercado
+3. Filtro de convergencia: requerir que más de 2 de 4 indicadores concuerden
+4. Compuesto ponderado -> probabilidad del modelo ARRIBA (rango 0.35-0.65)
+5. Comparar con los precios de Polymarket, operar del lado con mayor ventaja
 
-### Weather Temperature Strategy
-1. Fetch open weather markets from Kalshi (KXHIGH series, RSA-PSS auth) and Polymarket (Gamma API)
-2. Fetch 31-member GFS ensemble forecasts from Open-Meteo
-3. Count fraction of members above/below the market's temperature threshold
-4. That fraction = model probability (e.g., 28/31 members above 70F = 90% probability)
-5. Compare to market price on either platform, trade when edge > 8%
-6. Confidence = ensemble agreement (how one-sided the 31 members are)
+### Estrategia de Temperatura del Clima
+1. Obtener mercados climáticos abiertos de Kalshi (serie KXHIGH, autenticación RSA-PSS) y Polymarket (API Gamma)
+2. Obtener pronósticos de conjunto GFS de 31 miembros de Open-Meteo
+3. Contar la fracción de miembros por encima/debajo del umbral de temperatura del mercado
+4. Esa fracción = probabilidad del modelo (ej., 28/31 miembros por encima de 70F = 90% de probabilidad)
+5. Comparar con el precio del mercado en cualquier plataforma, operar cuando la ventaja > 8%
+6. Confianza = acuerdo del conjunto (qué tan unánimes son los 31 miembros)
 
-### Edge Calculation
+### Cálculo de la Ventaja (Edge)
 ```
 edge = model_probability - market_probability
 ```
-BTC signals require |edge| > 2%. Weather signals require |edge| > 8%.
+Las señales de BTC requieren |ventaja| > 2%. Las señales meteorológicas requieren |ventaja| > 8%.
 
-### Position Sizing (Fractional Kelly)
+### Tamaño de Posición (Kelly Fraccional)
 ```
 kelly = (win_prob * odds - lose_prob) / odds
 position_size = kelly * 0.15 * bankroll
 ```
-Capped at 5% of bankroll and $75 (BTC) or $100 (Weather) per trade.
+Limitado al 5% del capital y $75 (BTC) o $100 (Clima) por operación.
 
-## API Endpoints
+## Endpoints de la API
 
-| Endpoint | Method | Description |
+| Endpoint | Método | Descripción |
 |----------|--------|-------------|
-| `/api/dashboard` | GET | All dashboard data in one call |
-| `/api/btc/price` | GET | Current BTC price + momentum |
-| `/api/btc/windows` | GET | Active BTC 5-min windows |
-| `/api/signals` | GET | Current BTC trading signals |
-| `/api/signals/actionable` | GET | BTC signals above threshold |
-| `/api/kalshi/status` | GET | Kalshi API auth status + balance |
-| `/api/weather/forecasts` | GET | Ensemble forecasts for all cities |
-| `/api/weather/markets` | GET | Weather markets (Kalshi + Polymarket) |
-| `/api/weather/signals` | GET | Weather trading signals (both platforms) |
-| `/api/trades` | GET | Trade history |
-| `/api/stats` | GET | Bot statistics |
-| `/api/calibration` | GET | Signal calibration data |
-| `/api/run-scan` | POST | Trigger BTC + weather scan |
-| `/api/simulate-trade` | POST | Simulate a BTC trade |
-| `/api/settle-trades` | POST | Check settlements |
-| `/api/bot/start` | POST | Start trading |
-| `/api/bot/stop` | POST | Pause trading |
-| `/api/bot/reset` | POST | Reset all trades |
-| `/api/events` | GET | Event log |
-| `/ws/events` | WS | Real-time event stream |
+| `/api/dashboard` | GET | Todos los datos del panel en una llamada |
+| `/api/btc/price` | GET | Precio actual de BTC + momento |
+| `/api/btc/windows` | GET | Ventanas activas de BTC de 5 minutos |
+| `/api/signals` | GET | Señales comerciales actuales de BTC |
+| `/api/signals/actionable` | GET | Señales de BTC por encima del umbral |
+| `/api/kalshi/status` | GET | Estado de autenticación API Kalshi + saldo |
+| `/api/weather/forecasts` | GET | Pronósticos de conjunto para todas las ciudades |
+| `/api/weather/markets` | GET | Mercados del clima (Kalshi + Polymarket) |
+| `/api/weather/signals` | GET | Señales comerciales del clima (ambas plataformas) |
+| `/api/trades` | GET | Historial de operaciones |
+| `/api/stats` | GET | Estadísticas del bot |
+| `/api/calibration` | GET | Datos de calibración de la señal |
+| `/api/run-scan` | POST | Activar el escaneo de BTC + clima |
+| `/api/simulate-trade` | POST | Simular una operación BTC |
+| `/api/settle-trades` | POST | Verificar las liquidaciones |
+| `/api/bot/start` | POST | Iniciar trading |
+| `/api/bot/stop` | POST | Pausar trading |
+| `/api/bot/reset` | POST | Reiniciar todas las operaciones |
+| `/api/events` | GET | Registro de eventos |
+| `/ws/events` | WS | Flujo de eventos en tiempo real |
 
-## Configuration
+## Configuración
 
-All settings in `backend/config.py`, overridable via environment variables:
+Todas las configuraciones están en `backend/config.py`, se pueden anular con variables de entorno:
 
-### BTC Settings
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `SCAN_INTERVAL_SECONDS` | 60 | BTC scan frequency |
-| `MIN_EDGE_THRESHOLD` | 0.02 | Minimum edge (2%) |
-| `MAX_ENTRY_PRICE` | 0.55 | Max entry price (55c) |
-| `MAX_TRADE_SIZE` | 75.0 | Max $ per BTC trade |
-| `KELLY_FRACTION` | 0.15 | Fractional Kelly multiplier |
+### Configuraciones de BTC
+| Configuración | Predeterminado | Descripción |
+|---------------|----------------|-------------|
+| `SCAN_INTERVAL_SECONDS` | 60 | Frecuencia del escaneo BTC |
+| `MIN_EDGE_THRESHOLD` | 0.02 | Ventaja mínima (2%) |
+| `MAX_ENTRY_PRICE` | 0.55 | Precio máximo de entrada (55c) |
+| `MAX_TRADE_SIZE` | 75.0 | $ máximo por operación BTC |
+| `KELLY_FRACTION` | 0.15 | Multiplicador de Kelly fraccional |
 
-### Kalshi Settings
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `KALSHI_API_KEY_ID` | None | Kalshi API key ID |
-| `KALSHI_PRIVATE_KEY_PATH` | None | Path to RSA private key PEM file |
-| `KALSHI_ENABLED` | True | Enable/disable Kalshi market fetching |
+### Configuraciones de Kalshi
+| Configuración | Predeterminado | Descripción |
+|---------------|----------------|-------------|
+| `KALSHI_API_KEY_ID` | None | ID de clave API Kalshi |
+| `KALSHI_PRIVATE_KEY_PATH` | None | Ruta al archivo PEM de clave privada RSA |
+| `KALSHI_ENABLED` | True | Activar/desactivar la obtención de mercados Kalshi |
 
-### Weather Settings
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `WEATHER_ENABLED` | True | Enable/disable weather trading |
-| `WEATHER_SCAN_INTERVAL_SECONDS` | 300 | Weather scan frequency (5 min) |
-| `WEATHER_MIN_EDGE_THRESHOLD` | 0.08 | Minimum edge (8%) |
-| `WEATHER_MAX_ENTRY_PRICE` | 0.70 | Max entry price (70c) |
-| `WEATHER_MAX_TRADE_SIZE` | 100.0 | Max $ per weather trade |
-| `WEATHER_CITIES` | nyc,chicago,miami,los_angeles,denver | Cities to track |
+### Configuraciones del Clima
+| Configuración | Predeterminado | Descripción |
+|---------------|----------------|-------------|
+| `WEATHER_ENABLED` | True | Activar/desactivar el trading del clima |
+| `WEATHER_SCAN_INTERVAL_SECONDS` | 300 | Frecuencia del escaneo del clima (5 min) |
+| `WEATHER_MIN_EDGE_THRESHOLD` | 0.08 | Ventaja mínima (8%) |
+| `WEATHER_MAX_ENTRY_PRICE` | 0.70 | Precio máximo de entrada (70c) |
+| `WEATHER_MAX_TRADE_SIZE` | 100.0 | $ máximo por operación del clima |
+| `WEATHER_CITIES` | nyc,chicago,miami,los_angeles,denver | Ciudades para seguir |
 
-### Risk Management
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `DAILY_LOSS_LIMIT` | 300.0 | Daily loss circuit breaker |
-| `MAX_TOTAL_PENDING_TRADES` | 20 | Max open positions |
-| `INITIAL_BANKROLL` | 10000.0 | Starting paper bankroll |
+### Gestión de Riesgos
+| Configuración | Predeterminado | Descripción |
+|---------------|----------------|-------------|
+| `DAILY_LOSS_LIMIT` | 300.0 | Límite diario de pérdidas |
+| `MAX_TOTAL_PENDING_TRADES` | 20 | Máximas posiciones abiertas |
+| `INITIAL_BANKROLL` | 10000.0 | Capital inicial para simulación |
 
-## Supported Cities (Weather)
+## Ciudades Compatibles (Clima)
 
-| City | Station | Tracked |
-|------|---------|---------|
-| New York | KNYC | Default |
-| Chicago | KORD | Default |
-| Miami | KMIA | Default |
-| Los Angeles | KLAX | Default |
-| Denver | KDEN | Default |
+| Ciudad | Estación | Seguimiento |
+|--------|----------|-------------|
+| Nueva York | KNYC | Predeterminado |
+| Chicago | KORD | Predeterminado |
+| Miami | KMIA | Predeterminado |
+| Los Ángeles | KLAX | Predeterminado |
+| Denver | KDEN | Predeterminado |
 
-Add more cities by editing `WEATHER_CITIES` in config and adding entries to `CITY_CONFIG` in `backend/data/weather.py`.
+Agrega más ciudades editando `WEATHER_CITIES` en la configuración y añadiendo entradas a `CITY_CONFIG` en `backend/data/weather.py`.
 
-## Data Sources
+## Fuentes de Datos
 
-| Source | Data | Used For | Auth |
-|--------|------|----------|------|
-| Coinbase | BTC 1-min candles | BTC microstructure | None |
-| Kraken | BTC 1-min candles | BTC fallback | None |
-| Binance | BTC 1-min candles | BTC fallback | None |
-| Open-Meteo | GFS Ensemble (31 members) | Weather probability | None |
-| NWS API | Observed temperatures | Weather settlement | None |
-| Polymarket | Market prices + resolution | Both strategies | None |
-| Kalshi | Weather temperature markets (KXHIGH) | Weather strategy | RSA key |
+| Fuente | Datos | Usado Para | Autenticación |
+|--------|-------|------------|---------------|
+| Coinbase | Velas de 1 min BTC | Microestructura BTC | Ninguna |
+| Kraken | Velas de 1 min BTC | Respaldo BTC | Ninguna |
+| Binance | Velas de 1 min BTC | Respaldo BTC | Ninguna |
+| Open-Meteo | Conjunto GFS (31 miembros) | Probabilidad del Clima | Ninguna |
+| NWS API | Temperaturas observadas | Liquidación del clima | Ninguna |
+| Polymarket | Precios de mercado + resolución | Ambas estrategias | Ninguna |
+| Kalshi | Mercados del clima (KXHIGH) | Estrategia de clima | Clave RSA |
 
-## Project Structure
+## Estructura del Proyecto
 
 ```
 kalshi-trading-bot/
@@ -256,10 +256,10 @@ kalshi-trading-bot/
 └── README.md
 ```
 
-## Disclaimer
+## Descargo de Responsabilidad
 
-This is a **simulation tool** for educational purposes. It does not place real trades or use real money. Past performance in simulation does not guarantee future results. Prediction markets involve risk of loss.
+Esta es una **herramienta de simulación** con fines educativos. No realiza operaciones reales ni utiliza dinero real. El rendimiento pasado en la simulación no garantiza resultados futuros. Los mercados de predicción implican riesgo de pérdida.
 
-## License
+## Licencia
 
-MIT - do whatever you want with it.
+MIT - haz lo que quieras con él.
