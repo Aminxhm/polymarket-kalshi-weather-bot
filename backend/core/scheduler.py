@@ -76,7 +76,7 @@ async def scan_and_trade_job():
         try:
             state = db.query(BotState).first()
             if not state:
-                log_event("error", "Bot state not initialized")
+                log_event("error", "Estado del bot no inicializado")
                 return
 
             if not state.is_running:
@@ -119,7 +119,7 @@ async def scan_and_trade_job():
                 trade_size = max(trade_size, MIN_TRADE_SIZE)
 
                 if state.bankroll < MIN_TRADE_SIZE:
-                    log_event("warning", f"Bankroll too low: ${state.bankroll:.2f}")
+                    log_event("warning", f"Capital demasiado bajo: ${state.bankroll:.2f}")
                     break
 
                 if trades_executed >= MAX_TRADES_PER_SCAN:
@@ -209,7 +209,7 @@ async def weather_scan_and_trade_job():
         try:
             state = db.query(BotState).first()
             if not state:
-                log_event("error", "Bot state not initialized")
+                log_event("error", "Estado del bot no inicializado")
                 return
 
             if not state.is_running:
@@ -245,7 +245,7 @@ async def weather_scan_and_trade_job():
                 trade_size = max(trade_size, MIN_TRADE_SIZE)
 
                 if state.bankroll < MIN_TRADE_SIZE:
-                    log_event("warning", f"Bankroll too low: ${state.bankroll:.2f}")
+                    log_event("warning", f"Capital demasiado bajo: ${state.bankroll:.2f}")
                     break
 
                 if trades_executed >= MAX_TRADES_PER_SCAN:
@@ -371,7 +371,7 @@ async def heartbeat_job():
         pending = db.query(Trade).filter(Trade.settled == False).count()
 
         if state is None:
-            log_event("warning", "Heartbeat: Bot state not initialized")
+            log_event("warning", "Heartbeat: Estado del bot no inicializado")
             return
 
         log_event("data", f"Heartbeat: {pending} pending trades, bankroll: ${state.bankroll:.2f}", {

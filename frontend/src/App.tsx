@@ -41,8 +41,8 @@ function WindowPill({ window: w }: { window: BtcWindow }) {
 
   return (
     <div className={`flex items-center gap-2 px-2 py-1 border shrink-0 ${w.is_active ? 'border-amber-500/30 bg-amber-500/5' : 'border-neutral-800 bg-neutral-900/50'}`}>
-      {w.is_active && <span className="text-[9px] font-bold text-amber-400 uppercase">Live</span>}
-      {w.is_upcoming && <span className="text-[9px] font-medium text-blue-400 uppercase">Next</span>}
+      {w.is_active && <span className="text-[9px] font-bold text-amber-400 uppercase">En Vivo</span>}
+      {w.is_upcoming && <span className="text-[9px] font-medium text-blue-400 uppercase">Próx</span>}
       <span className="text-[10px] tabular-nums text-green-400">{(w.up_price * 100).toFixed(0)}c</span>
       <span className="text-neutral-600 text-[10px]">/</span>
       <span className="text-[10px] tabular-nums text-red-400">{(w.down_price * 100).toFixed(0)}c</span>
@@ -217,7 +217,7 @@ function App() {
               className="shrink-0 border-b border-neutral-800 px-2 py-2"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Microstructure</span>
+                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Microestructura</span>
                 <span className="text-[9px] text-neutral-600 tabular-nums">{micro.source}</span>
               </div>
               <MicrostructurePanel micro={micro} />
@@ -227,7 +227,7 @@ function App() {
           {/* Equity chart */}
           <div className="border-b border-neutral-800" style={{ height: '28%', minHeight: '120px' }}>
             <div className="px-2 py-1 border-b border-neutral-800 flex items-center justify-between shrink-0">
-              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Equity</span>
+              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Capital</span>
               <span className={`text-[10px] tabular-nums ${stats.total_pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                 {stats.total_pnl >= 0 ? '+' : ''}${stats.total_pnl.toFixed(0)}
               </span>
@@ -245,7 +245,7 @@ function App() {
               className="shrink-0 border-b border-neutral-800 px-2 py-2"
             >
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Calibration</span>
+                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Calibración</span>
                 <span className="text-[9px] text-neutral-600 tabular-nums">{calibration.total_with_outcome} settled</span>
               </div>
               <CalibrationPanel calibration={calibration} />
@@ -272,7 +272,7 @@ function App() {
             <div className="absolute inset-0">
               <Suspense fallback={
                 <div className="w-full h-full flex items-center justify-center bg-black">
-                  <span className="text-[10px] text-neutral-600 uppercase tracking-wider">Loading Globe...</span>
+                  <span className="text-[10px] text-neutral-600 uppercase tracking-wider">Cargando Globo...</span>
                 </div>
               }>
                 <GlobeView forecasts={weatherForecasts} signals={weatherSignals} />
@@ -281,7 +281,7 @@ function App() {
             {/* Globe overlay: actionable count */}
             <div className="absolute top-2 left-2 z-10">
               <div className="px-2 py-1 bg-black/80 border border-neutral-800 text-[10px]">
-                <span className="text-neutral-500 uppercase tracking-wider mr-2">Markets</span>
+                <span className="text-neutral-500 uppercase tracking-wider mr-2">Mercados</span>
                 <span className="text-amber-500 tabular-nums">{actionableCount} actionable</span>
               </div>
             </div>
@@ -292,7 +292,7 @@ function App() {
             {/* Edge Distribution */}
             <div className="border-r border-neutral-800 flex flex-col min-h-0">
               <div className="px-2 py-1 border-b border-neutral-800 shrink-0">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Edge Distribution</span>
+                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Distrib. de Ventaja</span>
               </div>
               <div className="flex-1 min-h-0 p-1">
                 <EdgeDistribution btcSignals={activeSignals} weatherSignals={weatherSignals} />
@@ -302,7 +302,7 @@ function App() {
             {/* BTC Windows */}
             <div className="border-r border-neutral-800 flex flex-col min-h-0">
               <div className="px-2 py-1 border-b border-neutral-800 shrink-0">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">BTC Windows</span>
+                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Ventanas BTC</span>
               </div>
               <div className="flex-1 min-h-0 overflow-y-auto p-1 space-y-1">
                 {windows.length > 0 ? (
@@ -310,7 +310,7 @@ function App() {
                     <WindowPill key={w.slug} window={w} />
                   ))
                 ) : (
-                  <div className="text-[10px] text-neutral-600 p-2">No active windows</div>
+                  <div className="text-[10px] text-neutral-600 p-2">No hay ventanas activas</div>
                 )}
               </div>
             </div>
@@ -318,7 +318,7 @@ function App() {
             {/* Weather Forecasts */}
             <div className="flex flex-col min-h-0">
               <div className="px-2 py-1 border-b border-neutral-800 flex items-center justify-between shrink-0">
-                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Weather</span>
+                <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Clima</span>
                 <span className="px-1 py-0.5 text-[8px] font-bold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">WX</span>
               </div>
               <div className="flex-1 min-h-0 overflow-y-auto">
@@ -333,7 +333,7 @@ function App() {
           {/* Signals - top portion */}
           <div className="flex flex-col min-h-0" style={{ height: '50%' }}>
             <div className="px-2 py-1 border-b border-neutral-800 flex items-center justify-between shrink-0">
-              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Signals</span>
+              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Señales</span>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-amber-400 tabular-nums">{activeSignals.length} BTC</span>
                 {weatherSignals.length > 0 && (
@@ -354,7 +354,7 @@ function App() {
           {/* Trades */}
           <div className="flex flex-col min-h-0 border-t border-neutral-800" style={{ height: '50%' }}>
             <div className="px-2 py-1 border-b border-neutral-800 flex items-center justify-between shrink-0">
-              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Trades</span>
+              <span className="text-[10px] text-neutral-500 uppercase tracking-wider">Operaciones</span>
               <span className="text-[10px] text-neutral-600 tabular-nums">{recentTrades.length}</span>
             </div>
             <div className="flex-1 overflow-y-auto min-h-0">
@@ -374,7 +374,7 @@ function App() {
           <span className="text-[10px] text-neutral-700 font-mono">BTC 5-min + Weather Temp</span>
           <div className="flex items-center gap-1">
             <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-            <span className="text-[10px] text-neutral-600 font-mono">Connected</span>
+            <span className="text-[10px] text-neutral-600 font-mono">Conectado</span>
           </div>
         </div>
       </footer>

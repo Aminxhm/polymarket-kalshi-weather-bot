@@ -298,7 +298,7 @@ async def health():
 async def get_stats(db: Session = Depends(get_db)):
     state = db.query(BotState).first()
     if not state:
-        raise HTTPException(status_code=404, detail="Bot state not initialized")
+        raise HTTPException(status_code=404, detail="Estado del bot no inicializado")
 
     win_rate = state.winning_trades / state.total_trades if state.total_trades > 0 else 0
 
@@ -384,7 +384,7 @@ def _signal_to_response(s: TradingSignal, actionable: bool = False) -> SignalRes
     return SignalResponse(
         market_ticker=s.market.market_id,
         market_title=f"BTC 5m - {s.market.slug}",
-        platform="polymarket",
+        platform=s.market.platform,
         direction=s.direction,
         model_probability=s.model_probability,
         market_probability=s.market_probability,
@@ -460,17 +460,17 @@ async def simulate_trade(signal_ticker: str, db: Session = Depends(get_db)):
     signal = next((s for s in signals if s.market.market_id == signal_ticker), None)
 
     if not signal:
-        raise HTTPException(status_code=404, detail="Signal not found")
+        raise HTTPException(status_code=404, detail="Señal no encontrada")
 
     state = db.query(BotState).first()
     if not state:
-        raise HTTPException(status_code=500, detail="Bot state not initialized")
+        raise HTTPException(status_code=500, detail="Estado del bot no inicializado")
 
     entry_price = signal.market.up_price if signal.direction == "up" else signal.market.down_price
 
     trade = Trade(
         market_ticker=signal.market.market_id,
-        platform="polymarket",
+        platform=signal.market.platform,
         event_slug=signal.market.slug,
         direction=signal.direction,
         entry_price=entry_price,
@@ -799,7 +799,7 @@ async def start_bot(db: Session = Depends(get_db)):
     if not is_scheduler_running():
         start_scheduler()
 
-    log_event("success", "Trading bot started")
+    log_event("success", "Bot de trading iniciado")
     return {"status": "started", "is_running": True}
 
 
@@ -812,7 +812,7 @@ async def stop_bot(db: Session = Depends(get_db)):
         state.is_running = False
         db.commit()
 
-    log_event("info", "Trading bot paused")
+    log_event("info", "Bot de trading pausado")
     return {"status": "stopped", "is_running": False}
 
 
@@ -833,7 +833,7 @@ async def reset_bot(db: Session = Depends(get_db)):
         ai_logs_deleted = db.query(AILog).delete()
         db.commit()
 
-        log_event("success", f"Bot reset: {trades_deleted} trades deleted. Fresh start with ${settings.INITIAL_BANKROLL:,.2f}")
+        log_event("success", f"Bot reiniciado: {trades_deleted} operaciones eliminadas. Nuevo comienzo con ${settings.INITIAL_BANKROLL:,.2f}")
 
         return {
             "status": "reset",
@@ -1013,7 +1013,7 @@ async def websocket_events(websocket: WebSocket):
         await websocket.send_json({
             "timestamp": datetime.utcnow().isoformat(),
             "type": "success",
-            "message": "Connected to BTC trading bot"
+            "message": "Conectado al bot de trading BTC"
         })
 
         from backend.core.scheduler import get_recent_events

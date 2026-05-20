@@ -161,7 +161,7 @@ async def scan_for_weather_signals() -> List[WeatherTradingSignal]:
         markets.extend(poly_markets)
         logger.info(f"Polymarket: {len(poly_markets)} weather markets")
     except Exception as e:
-        logger.error(f"Failed to fetch Polymarket weather markets: {e}")
+        logger.error(f"Fallo al fetch Polymarket weather markets: {e}")
 
     # Kalshi
     if settings.KALSHI_ENABLED:
@@ -173,7 +173,7 @@ async def scan_for_weather_signals() -> List[WeatherTradingSignal]:
                 markets.extend(kalshi_markets)
                 logger.info(f"Kalshi: {len(kalshi_markets)} weather markets")
         except Exception as e:
-            logger.error(f"Failed to fetch Kalshi weather markets: {e}")
+            logger.error(f"Fallo al fetch Kalshi weather markets: {e}")
 
     logger.info(f"Found {len(markets)} total weather temperature markets")
 
@@ -238,7 +238,7 @@ def _persist_weather_signals(signals: list):
 
         db.commit()
     except Exception as e:
-        logger.warning(f"Failed to persist weather signals: {e}")
+        logger.warning(f"Fallo al persist weather signals: {e}")
         db.rollback()
     finally:
         db.close()

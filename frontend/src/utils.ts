@@ -58,7 +58,7 @@ export function getPnlColorClass(pnl: number | null): string {
 }
 
 export function formatCountdown(seconds: number): string {
-  if (seconds <= 0) return 'Ended'
+  if (seconds <= 0) return 'Terminado'
   const mins = Math.floor(seconds / 60)
   const secs = Math.floor(seconds % 60)
   return `${mins}:${secs.toString().padStart(2, '0')}`
