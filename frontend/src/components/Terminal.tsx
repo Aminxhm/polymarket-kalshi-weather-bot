@@ -163,7 +163,7 @@ export function Terminal({ isRunning, lastRun, onStart, onStop, onScan }: Props)
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
           </div>
-          <span className="text-[10px] text-neutral-500 uppercase tracking-wider ml-2">System Log</span>
+          <span className="text-[10px] text-neutral-500 uppercase tracking-wider ml-2">Registro del Sistema</span>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
@@ -184,7 +184,7 @@ export function Terminal({ isRunning, lastRun, onStart, onStop, onScan }: Props)
       {/* Log content */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-3 space-y-0.5 min-h-0">
         {logs.length === 0 ? (
-          <div className="text-neutral-600 text-xs">Waiting for events...</div>
+          <div className="text-neutral-600 text-xs">Esperando eventos...</div>
         ) : (
           logs.map((log, i) => (
             <div key={i} className="flex gap-2 text-xs leading-relaxed">
@@ -242,7 +242,7 @@ export function Terminal({ isRunning, lastRun, onStart, onStop, onScan }: Props)
             {lastRun ? `Last: ${formatTime(lastRun)}` : 'No scans'}
           </span>
           <span className="text-[10px] text-neutral-600 tabular-nums">
-            {logs.length} entries
+            {logs.length} entradas
           </span>
         </div>
       </div>

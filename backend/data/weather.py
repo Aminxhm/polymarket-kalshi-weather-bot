@@ -200,7 +200,7 @@ async def fetch_ensemble_forecast(city_key: str, target_date: Optional[date] = N
             return forecast
 
     except Exception as e:
-        logger.warning(f"Failed to fetch ensemble forecast for {city_key}: {e}")
+        logger.warning(f"Fallo al fetch ensemble forecast for {city_key}: {e}")
         return None
 
 
@@ -251,5 +251,5 @@ async def fetch_nws_observed_temperature(city_key: str, target_date: Optional[da
             }
 
     except Exception as e:
-        logger.warning(f"Failed to fetch NWS observations for {city_key}: {e}")
+        logger.warning(f"Fallo al fetch NWS observations for {city_key}: {e}")
         return None

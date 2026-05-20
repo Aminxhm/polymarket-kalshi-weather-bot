@@ -162,7 +162,7 @@ async def fetch_btc_market_by_slug(slug: str) -> Optional[BtcMarket]:
             return _parse_event_to_btc_market(event)
 
         except Exception as e:
-            logger.debug(f"Failed to fetch BTC market {slug}: {e}")
+            logger.debug(f"Fallo al fetch BTC market {slug}: {e}")
             return None
 
 
@@ -238,7 +238,7 @@ async def fetch_btc_market_for_settlement(slug: str) -> Optional[BtcMarket]:
             return _parse_event_to_btc_market(event)
 
         except Exception as e:
-            logger.warning(f"Failed to fetch BTC market for settlement {slug}: {e}")
+            logger.warning(f"Fallo al fetch BTC market for settlement {slug}: {e}")
             return None
 
 

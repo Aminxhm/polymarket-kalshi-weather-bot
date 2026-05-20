@@ -22,7 +22,7 @@ export function CalibrationPanel({ calibration }: Props) {
           {accuracyPct}%
         </div>
         <div className="text-[10px] text-neutral-500 leading-tight">
-          <div>Accuracy</div>
+          <div>Precisión</div>
           <div className="tabular-nums text-neutral-600">
             {Math.round(calibration.accuracy * calibration.total_with_outcome)}/{calibration.total_with_outcome}
           </div>
@@ -55,7 +55,7 @@ export function CalibrationPanel({ calibration }: Props) {
           <span className="tabular-nums text-amber-500 w-10 text-right">{predEdge}%</span>
         </div>
         <div className="flex items-center gap-2 text-[10px]">
-          <span className="text-neutral-500 w-10 shrink-0">Actual</span>
+          <span className="text-neutral-500 w-10 shrink-0">Real</span>
           <div className="flex-1 meter-bar">
             <div
               className="meter-fill"

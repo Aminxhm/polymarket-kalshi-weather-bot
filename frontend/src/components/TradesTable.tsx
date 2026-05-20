@@ -60,8 +60,8 @@ export function TradesTable({ trades }: Props) {
   if (trades.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-neutral-600">
-        <p className="text-xs">No trades yet</p>
-        <p className="text-[10px] mt-0.5">Trades will appear here</p>
+        <p className="text-xs">Aún no hay operaciones</p>
+        <p className="text-[10px] mt-0.5">Las operaciones aparecerán aquí</p>
       </div>
     )
   }
@@ -79,7 +79,7 @@ export function TradesTable({ trades }: Props) {
               St <SortIcon column="result" />
             </div>
           </th>
-          <th className="py-1.5 px-1.5 font-medium">Market</th>
+          <th className="py-1.5 px-1.5 font-medium">Mercado</th>
           <th className="py-1.5 px-1.5 font-medium text-center">Dir</th>
           <th
             className="py-1.5 px-1.5 font-medium text-right cursor-pointer hover:text-neutral-400"

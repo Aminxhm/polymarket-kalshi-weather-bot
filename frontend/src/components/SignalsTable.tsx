@@ -134,7 +134,7 @@ export function SignalsTable({ signals, weatherSignals, onSimulateTrade, isSimul
   if (unified.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-neutral-600">
-        <p className="text-xs">No signals generated</p>
+        <p className="text-xs">No hay señales generadas</p>
         <p className="text-[10px] mt-0.5 text-neutral-700">Run a scan or wait for next cycle</p>
       </div>
     )
@@ -146,7 +146,7 @@ export function SignalsTable({ signals, weatherSignals, onSimulateTrade, isSimul
         <tr className="text-neutral-600 text-left text-[10px] border-b border-neutral-800">
           <th className="py-1.5 px-1.5 font-medium w-6"></th>
           <th className="py-1.5 px-1.5 font-medium w-5"></th>
-          <th className="py-1.5 px-1.5 font-medium">Signal</th>
+          <th className="py-1.5 px-1.5 font-medium">Señal</th>
           <th className="py-1.5 px-1.5 font-medium text-center w-8">Dir</th>
           <th
             className="py-1.5 px-1.5 font-medium text-right cursor-pointer hover:text-neutral-400"

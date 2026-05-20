@@ -49,7 +49,7 @@ async def fetch_polymarket_resolution(market_id: str, event_slug: Optional[str] 
             return _parse_market_resolution(market)
 
     except Exception as e:
-        logger.warning(f"Failed to fetch resolution for {event_slug or market_id}: {e}")
+        logger.warning(f"Fallo al fetch resolution for {event_slug or market_id}: {e}")
         return False, None
 
 
@@ -77,7 +77,7 @@ async def _search_market_in_events(market_id: str) -> Tuple[bool, Optional[float
         return False, None
 
     except Exception as e:
-        logger.warning(f"Failed to search for market {market_id}: {e}")
+        logger.warning(f"Fallo al search for market {market_id}: {e}")
         return False, None
 
 
@@ -116,7 +116,7 @@ def _parse_market_resolution(market: dict) -> Tuple[bool, Optional[float]]:
             return False, None
 
     except (ValueError, IndexError, TypeError) as e:
-        logger.warning(f"Failed to parse outcome prices: {e}")
+        logger.warning(f"Fallo al parse outcome prices: {e}")
         return False, None
 
 
@@ -223,7 +223,7 @@ async def _fetch_kalshi_resolution(ticker: str) -> Tuple[bool, Optional[float]]:
         return False, None
 
     except Exception as e:
-        logger.warning(f"Failed to fetch Kalshi resolution for {ticker}: {e}")
+        logger.warning(f"Fallo al fetch Kalshi resolution for {ticker}: {e}")
         return False, None
 
 
@@ -235,7 +235,7 @@ async def settle_pending_trades(db: Session) -> List[Trade]:
     try:
         pending = db.query(Trade).filter(Trade.settled == False).all()
     except Exception as e:
-        logger.error(f"Failed to query pending trades: {e}")
+        logger.error(f"Fallo al query pending trades: {e}")
         return []
 
     if not pending:
@@ -279,7 +279,7 @@ async def settle_pending_trades(db: Session) -> List[Trade]:
                         linked_signal.settlement_value = settlement_value
                         linked_signal.settled_at = datetime.utcnow()
         except Exception as e:
-            logger.error(f"Failed to settle trade {trade.id}: {e}")
+            logger.error(f"Fallo al settle trade {trade.id}: {e}")
             continue
 
     if settled_trades:
@@ -287,7 +287,7 @@ async def settle_pending_trades(db: Session) -> List[Trade]:
             db.commit()
             logger.info(f"Settled {len(settled_trades)} trades")
         except Exception as e:
-            logger.error(f"Failed to commit settlements: {e}")
+            logger.error(f"Fallo al commit settlements: {e}")
             db.rollback()
             return []
     else:
@@ -317,5 +317,5 @@ async def update_bot_state_with_settlements(db: Session, settled_trades: List[Tr
         db.commit()
         logger.info(f"Updated bot state: Bankroll ${state.bankroll:.2f}, P&L ${state.total_pnl:+.2f}")
     except Exception as e:
-        logger.error(f"Failed to update bot state: {e}")
+        logger.error(f"Fallo al update bot state: {e}")
         db.rollback()
