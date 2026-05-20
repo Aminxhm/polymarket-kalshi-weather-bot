@@ -162,7 +162,7 @@ async def fetch_kalshi_weather_markets(
                     break
 
         except Exception as e:
-            logger.warning(f"Fallo al fetch Kalshi markets for {city_key} ({series}): {e}")
+            logger.warning(f"Fallo al obtener mercados Kalshi para {city_key} ({series}): {e}")
 
     logger.info(f"Found {len(markets)} Kalshi weather markets")
     return markets

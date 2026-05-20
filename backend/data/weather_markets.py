@@ -204,7 +204,7 @@ async def fetch_polymarket_weather_markets(city_keys: Optional[List[str]] = None
                     logger.debug(f"Weather slug search for '{slug_pattern}' failed: {e}")
 
     except Exception as e:
-        logger.warning(f"Fallo al fetch weather markets: {e}")
+        logger.warning(f"Fallo al obtener mercados climáticos: {e}")
 
     logger.info(f"Found {len(markets)} weather temperature markets")
     return markets

@@ -133,7 +133,7 @@ async def generate_btc_signal(market: BtcMarket) -> Optional[TradingSignal]:
     try:
         micro = await compute_btc_microstructure()
     except Exception as e:
-        logger.warning(f"Fallo al compute microstructure: {e}")
+        logger.warning(f"Fallo al calcular microestructura: {e}")
         return None
 
     if not micro:
@@ -299,7 +299,7 @@ async def scan_for_signals() -> List[TradingSignal]:
     try:
         markets = await fetch_active_btc_markets()
     except Exception as e:
-        logger.error(f"Fallo al fetch BTC markets: {e}")
+        logger.error(f"Fallo al obtener mercados BTC: {e}")
         markets = []
 
     logger.info(f"Found {len(markets)} active BTC 5-min markets")
@@ -369,7 +369,7 @@ def _persist_signals(signals: list):
 
         db.commit()
     except Exception as e:
-        logger.warning(f"Fallo al persist signals: {e}")
+        logger.warning(f"Fallo al persistir señales: {e}")
         db.rollback()
     finally:
         db.close()

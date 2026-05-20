@@ -12,10 +12,10 @@ interface Props {
 }
 
 const STATUSES = [
-  { value: 'all', label: 'All Status' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'win', label: 'Won' },
-  { value: 'loss', label: 'Lost' }
+  { value: 'all', label: 'Todos' },
+  { value: 'pending', label: 'Pendiente' },
+  { value: 'win', label: 'Ganado' },
+  { value: 'loss', label: 'Perdido' }
 ] as const
 
 export function FilterBar({ filters, onFilterChange, showStatus = false }: Props) {
@@ -31,7 +31,7 @@ export function FilterBar({ filters, onFilterChange, showStatus = false }: Props
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Buscar..."
           value={filters.search}
           onChange={(e) => onFilterChange({ ...filters, search: e.target.value })}
           className="w-full pl-10 pr-4 py-2 bg-neutral-950 border border-neutral-800 text-sm text-neutral-300 placeholder-neutral-600 focus:outline-none focus:border-neutral-600 transition-colors"

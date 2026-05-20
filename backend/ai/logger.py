@@ -131,7 +131,7 @@ class AICallLogger:
             with open(self._log_file, "a") as f:
                 f.write(json.dumps(asdict(record)) + "\n")
         except Exception as e:
-            logger.error(f"Fallo al write AI log: {e}")
+            logger.error(f"Fallo al escribir el log de IA: {e}")
 
     async def log_to_database(self, record: AICallRecord, db_session):
         """Write record to database."""
@@ -155,7 +155,7 @@ class AICallLogger:
             db_session.add(db_record)
             db_session.commit()
         except Exception as e:
-            logger.error(f"Fallo al log AI call to database: {e}")
+            logger.error(f"Fallo al registrar la llamada a la IA en la base de datos: {e}")
 
     def get_daily_stats(self) -> Dict[str, Any]:
         """Get statistics for today's AI calls."""
@@ -205,7 +205,7 @@ class AICallLogger:
                 stats["avg_latency_ms"] = sum(latencies) / len(latencies)
 
         except Exception as e:
-            logger.error(f"Fallo al get AI stats: {e}")
+            logger.error(f"Fallo al obtener estadísticas de IA: {e}")
 
         return stats
 
